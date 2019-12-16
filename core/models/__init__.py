@@ -1,1 +1,1 @@
-from .models import AuditableModel
+from .models import AuditableModel, UniqueIDClass

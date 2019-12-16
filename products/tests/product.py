@@ -34,6 +34,7 @@ class ProductTestCaseWithServer(TestCase):
         detail_url = reverse('products:api:v1:product_detail_api_view', args=[1, ])
         cls.create_response = cls.client.post(url, data=dict(name='test_product'))
         cls.get_response = cls.client.get(detail_url)
+        cls.list_response = cls.client.get(url)
 
     def test_create_product(self):
         self.assertEqual(self.create_response.status_code, 200)
@@ -42,5 +43,13 @@ class ProductTestCaseWithServer(TestCase):
     def test_get_product_detail(self):
         self.assertEqual(self.get_response.status_code, 200)
         assert (isinstance(self.get_response.data, dict))
+
+    def test_get_product_list(self):
+        self.assertEqual(self.list_response.status_code, 200)
+        self.assertIsInstance(self.list_response.data, dict)
+        self.assertIn('data', self.list_response.data)
+        self.assertIn('page', self.list_response.data)
+        self.assertIn('limit', self.list_response.data)
+        self.assertIn('count', self.list_response.data)
 
 

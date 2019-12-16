@@ -11,3 +11,8 @@ class ProductDataLayer(object):
     @classmethod
     def get_product_by_id(cls, id) -> Product:
         return Product.objects.get(id=id)
+
+    @classmethod
+    def get_all_products(cls):
+        return Product.objects.all()
+
