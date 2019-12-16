@@ -27,3 +27,16 @@ class ProductApiView(APIView):
                 status=500,
                 message=str(exc)
             ), 500)
+
+
+class ProductDetailApiView(APIView):
+    def get(self, request, id):
+        try:
+            p = ProductDataLayer.get_product_by_id(int(id))
+            data = ProductSerializer(p).data
+            return CoreResponse.send(data, 200)
+        except Exception as exc:
+            return CoreResponse.send(dict(
+                status=500,
+                messsage=str(exc)
+            ), 500)

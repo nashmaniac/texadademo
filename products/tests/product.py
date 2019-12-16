@@ -26,11 +26,21 @@ class ProductTestCase(TestCase):
 
 
 class ProductTestCaseWithServer(TestCase):
-    def setUp(self) -> None:
-        self.client = Client()
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+        url = reverse('products:api:v1:product_api_view')
+        detail_url = reverse('products:api:v1:product_detail_api_view', args=[1, ])
+        cls.create_response = cls.client.post(url, data=dict(name='test_product'))
+        cls.get_response = cls.client.get(detail_url)
 
     def test_create_product(self):
-        url = reverse_lazy('products:api:v1:product_api_view')
-        response = self.client.post(url, data=dict(name='test_product'))
-        self.assertEqual(response.status_code, 200)
-        assert (isinstance(response.data, dict))
+        self.assertEqual(self.create_response.status_code, 200)
+        assert (isinstance(self.create_response.data, dict))
+
+    def test_get_product_detail(self):
+        self.assertEqual(self.get_response.status_code, 200)
+        assert (isinstance(self.get_response.data, dict))
+
+
