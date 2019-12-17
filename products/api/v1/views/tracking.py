@@ -31,8 +31,10 @@ class TrackingApiView(APIView):
         try:
             page_size = int(request.query_params.get('pageSize', CoreUtils.get_default_page_size()))
             page_index = int(request.query_params.get('pageIndex', CoreUtils.get_default_page_index()))
+            search_term = request.query_params.get('searchTerm', None)
             start, end, page, limit = CoreUtils.get_start_end_index(page_index, page_size)
             t = ProductDataLayer.get_all_tracking()
+            t = ProductDataLayer.filter_tracking_queryset_by_text(t, search_term)
             t = t.distinct()
             count = t.count()
             data = dict(
