@@ -51,10 +51,27 @@ class ProductApiView(APIView):
 
 
 class ProductDetailApiView(APIView):
+    def _get_edit_serializer_class(self):
+        return ProductCreateSerializer
+
+    def put(self, request, id):
+        try:
+            serializer_class = self._get_edit_serializer_class()
+            serializer = serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            p = ProductDataLayer.edit_product(id, serializer.validated_data)
+            data = ProductSerializer(p).data
+            return CoreResponse.send(data, 200)
+        except Exception as exc:
+            return CoreResponse.send(dict(
+                status=500,
+                messsage=str(exc)
+            ), 500)
+
     def get(self, request, id):
         try:
             # get the product by id
-            p = ProductDataLayer.get_product_by_id(int(id))
+            p = ProductDataLayer.get_product_by_id(id)
             # serialize the object
             data = ProductSerializer(p).data
             return CoreResponse.send(data, 200)
@@ -63,3 +80,17 @@ class ProductDetailApiView(APIView):
                 status=500,
                 messsage=str(exc)
             ), 500)
+
+    def delete(self, request, id):
+        try:
+            # get the product by id
+            p = ProductDataLayer.get_product_by_id(id)
+            p.delete(soft=False)
+            data = dict()
+            return CoreResponse.send(data, 200)
+        except Exception as exc:
+            return CoreResponse.send(dict(
+                status=500,
+                messsage=str(exc)
+            ), 500)
+

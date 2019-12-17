@@ -1,8 +1,9 @@
 from django.test import TestCase, Client
+from django.urls import reverse
+from faker import Faker
+
 from ..datalayers import ProductDataLayer
 from ..models import Product
-from django.urls import reverse, reverse_lazy
-
 
 # Create your tests here.
 class ProductTestCase(TestCase):
@@ -30,9 +31,10 @@ class ProductTestCaseWithServer(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.client = Client()
+        faker = Faker()
         url = reverse('products:api:v1:product_api_view')
         detail_url = reverse('products:api:v1:product_detail_api_view', args=[1, ])
-        cls.create_response = cls.client.post(url, data=dict(name='test_product'))
+        cls.create_response = cls.client.post(url, data=dict(name=faker.company()))
         cls.get_response = cls.client.get(detail_url)
         cls.list_response = cls.client.get(url)
 

@@ -47,3 +47,10 @@ class ProductDataLayer(object):
         p.elevation = data.get('elevation')
         p.save()
         return p
+
+    @classmethod
+    def edit_product(cls, id, data):
+        p = cls.get_product_by_id(id)
+        p.name = data.get('name')
+        p.save()
+        return p
