@@ -12,8 +12,10 @@ class ProductApiView(APIView):
         try:
             page_size = int(request.query_params.get('pageSize', CoreUtils.get_default_page_size()))
             page_index = int(request.query_params.get('pageIndex', CoreUtils.get_default_page_index()))
+            search_term = request.query_params.get('searchTerm', None)
             start, end, page, limit = CoreUtils.get_start_end_index(page_index, page_size)
             p = ProductDataLayer.get_all_products()
+            p = ProductDataLayer.filter_product_queryset_by_text(p, search_term)
             p = p.distinct()
             count = p.count()
             data = dict(
@@ -51,10 +53,27 @@ class ProductApiView(APIView):
 
 
 class ProductDetailApiView(APIView):
+    def _get_edit_serializer_class(self):
+        return ProductCreateSerializer
+
+    def put(self, request, id):
+        try:
+            serializer_class = self._get_edit_serializer_class()
+            serializer = serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            p = ProductDataLayer.edit_product(id, serializer.validated_data)
+            data = ProductSerializer(p).data
+            return CoreResponse.send(data, 200)
+        except Exception as exc:
+            return CoreResponse.send(dict(
+                status=500,
+                messsage=str(exc)
+            ), 500)
+
     def get(self, request, id):
         try:
             # get the product by id
-            p = ProductDataLayer.get_product_by_id(int(id))
+            p = ProductDataLayer.get_product_by_id(id)
             # serialize the object
             data = ProductSerializer(p).data
             return CoreResponse.send(data, 200)
@@ -63,3 +82,17 @@ class ProductDetailApiView(APIView):
                 status=500,
                 messsage=str(exc)
             ), 500)
+
+    def delete(self, request, id):
+        try:
+            # get the product by id
+            p = ProductDataLayer.get_product_by_id(id)
+            p.delete(soft=False)
+            data = dict()
+            return CoreResponse.send(data, 200)
+        except Exception as exc:
+            return CoreResponse.send(dict(
+                status=500,
+                messsage=str(exc)
+            ), 500)
+
