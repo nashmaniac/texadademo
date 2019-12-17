@@ -17,7 +17,7 @@ class ProductDataLayer(object):
         return Product.objects.all()
 
     @classmethod
-    def filter_product_queryset_set_by_text(cls, queryset, search_term):
+    def filter_product_queryset_by_text(cls, queryset, search_term):
         if search_term:
             return queryset.filter(name__icontains=search_term)
         return queryset
@@ -42,6 +42,13 @@ class ProductDataLayer(object):
     def get_all_tracking(cls):
         return Tracking.objects.prefetch_related('product').all()
 
+    @classmethod
+    def filter_tracking_queryset_by_text(cls, queryset, search_term):
+        if search_term:
+            queryset = queryset.filter(
+                product__name__icontains=search_term
+            )
+        return queryset
     @classmethod
     def edit_tracking(cls, id, data):
         p = cls.get_tracking_by_id(id)

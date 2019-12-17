@@ -15,7 +15,7 @@ class ProductApiView(APIView):
             search_term = request.query_params.get('searchTerm', None)
             start, end, page, limit = CoreUtils.get_start_end_index(page_index, page_size)
             p = ProductDataLayer.get_all_products()
-            p = ProductDataLayer.filter_product_queryset_set_by_text(p, search_term)
+            p = ProductDataLayer.filter_product_queryset_by_text(p, search_term)
             p = p.distinct()
             count = p.count()
             data = dict(
