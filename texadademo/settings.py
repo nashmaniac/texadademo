@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'debug_toolbar',
     'core',
     'products',
 ]
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'texadademo.urls'
@@ -130,7 +132,12 @@ STATIC_URL = '/static/'
 
 DEFAULT_PAGE_SIZE = 100
 DEFAULT_PAGE_INDEX = 0
-# CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:8080'
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = [
+#     'http://localhost:8080'
+# ]
+
+INTERNAL_IPS = [
+    'localhost',
+    '127.0.0.1',
 ]

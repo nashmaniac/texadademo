@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.core.validators import MaxValueValidator, MinValueValidator
+from products.models import Tracking
+
 
 class TrackingCreateSerializer(serializers.Serializer):
     product = serializers.IntegerField()
@@ -11,3 +13,10 @@ class TrackingCreateSerializer(serializers.Serializer):
         validators=[MaxValueValidator(180), MinValueValidator(-180)]
     )
     elevation = serializers.FloatField()
+
+
+class TrackSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = Tracking
+        depth = 1
