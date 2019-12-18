@@ -31,31 +31,31 @@ Disclaimer: This instructions is written based on macos environment
 ```
 texadademo/
   core/
-    migrations/ # contains all the migrations
-    models/ # abstract models to be used throughout the project
-    utils/ # utility modules
+    migrations/             # contains all the migrations
+    models/                 # abstract models to be used throughout the project
+    utils/                  # utility modules
     ...
   products/
-    api/ # folders for the api in products package
-      v1/ # we used versioning in api
-        views/ # views for v1 in products package
-        serializers/ #serializers for v1
-        urls.py # url mapper for v1
+    api/                    # folders for the api in products package
+      v1/                   # we used versioning in api
+        views/              # views for v1 in products package
+        serializers/        #serializers for v1
+        urls.py             # url mapper for v1
         ...
-      urls.py # api url mapper
-    datalayers/ # abstraction layer to communicate in between view and models
-    migrations/ # migrations folder 
-    models/ # models folder to contain all model. Each model has separate files under this directory
-    tests/ # tests for the products
+      urls.py               # api url mapper
+    datalayers/             # abstraction layer to communicate in between view and models
+    migrations/             # migrations folder 
+    models/                 # models folder to contain all model. Each model has separate files under this directory
+    tests/                  # tests for the products
     ...
   texadademo/
-    settings.py # settings file 
-    wsgi.py # wsgi files
+    settings.py             # settings file 
+    wsgi.py                 # wsgi file
   ...
   manage.py
   .gitignore
   .dockerignore
-  Dockerfile # Dockerfile to containerize the application
+  Dockerfile                # Dockerfile to containerize the application
   ...
 ```  
 
