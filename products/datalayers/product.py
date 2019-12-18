@@ -1,4 +1,5 @@
 from ..models import Product, Tracking
+import datetime, pytz
 
 
 class ProductDataLayer(object):
@@ -49,6 +50,33 @@ class ProductDataLayer(object):
                 product__name__icontains=search_term
             )
         return queryset
+
+    @classmethod
+    def filter_tracking_queryset_by_product_id(cls, queryset, id):
+        if id:
+            queryset = queryset.filter(
+                product__id=id
+            )
+        return queryset
+
+    @classmethod
+    def filter_tracking_queryset_by_date(cls, queryset, date_string, timezone):
+        try:
+            if timezone:
+                d = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S.%fZ')
+                aware_date = pytz.timezone(timezone).localize(d)
+                date_time = aware_date.astimezone(pytz.timezone('UTC'))
+                end_date_time = date_time + datetime.timedelta(hours=23, minutes=59)
+                if date_time and end_date_time:
+                    queryset = queryset.filter(
+                        timestamp__gte=date_time, timestamp__lte=end_date_time
+                    )
+        except Exception as exc:
+            pass
+        return queryset
+
+
+
     @classmethod
     def edit_tracking(cls, id, data):
         p = cls.get_tracking_by_id(id)
