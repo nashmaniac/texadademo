@@ -37,7 +37,6 @@ class TrackingApiView(APIView):
             selected_product = request.query_params.get('selectedProduct', None)
             selected_date = request.query_params.get('selectedDate', None)
             timezone = request.query_params.get('timezone', None)
-            print(selected_date)
             start, end, page, limit = CoreUtils.get_start_end_index(page_index, page_size)
             t = ProductDataLayer.get_all_tracking()
             t = ProductDataLayer.filter_tracking_queryset_by_text(t, search_term)
