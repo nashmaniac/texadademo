@@ -13,9 +13,14 @@ class ProductApiView(APIView):
             page_size = int(request.query_params.get('pageSize', CoreUtils.get_default_page_size()))
             page_index = int(request.query_params.get('pageIndex', CoreUtils.get_default_page_index()))
             search_term = request.query_params.get('searchTerm', None)
+            current_sort = request.query_params.get('currentSort', None)
+            current_sort_dir = request.query_params.get('currentSortDir', None)
             start, end, page, limit = CoreUtils.get_start_end_index(page_index, page_size)
             p = ProductDataLayer.get_all_products()
             p = ProductDataLayer.filter_product_queryset_by_text(p, search_term)
+            if current_sort and current_sort_dir:
+                sorting_params = '-%s'%current_sort if current_sort_dir == 'desc' else '%s'%current_sort
+                p = p.order_by(sorting_params)
             p = p.distinct()
             count = p.count()
             data = dict(

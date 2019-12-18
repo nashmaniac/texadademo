@@ -32,9 +32,19 @@ class TrackingApiView(APIView):
             page_size = int(request.query_params.get('pageSize', CoreUtils.get_default_page_size()))
             page_index = int(request.query_params.get('pageIndex', CoreUtils.get_default_page_index()))
             search_term = request.query_params.get('searchTerm', None)
+            current_sort = request.query_params.get('currentSort', None)
+            current_sort_dir = request.query_params.get('currentSortDir', None)
+            selected_product = request.query_params.get('selectedProduct', None)
+            selected_date = request.query_params.get('selectedDate', None)
+            timezone = request.query_params.get('timezone', None)
             start, end, page, limit = CoreUtils.get_start_end_index(page_index, page_size)
             t = ProductDataLayer.get_all_tracking()
             t = ProductDataLayer.filter_tracking_queryset_by_text(t, search_term)
+            t = ProductDataLayer.filter_tracking_queryset_by_product_id(t, selected_product)
+            t = ProductDataLayer.filter_tracking_queryset_by_date(t, selected_date, timezone)
+            if current_sort and current_sort_dir:
+                sorting_params = '-%s'%current_sort if current_sort_dir == 'desc' else '%s'%current_sort
+                t = t.order_by(sorting_params)
             t = t.distinct()
             count = t.count()
             data = dict(
