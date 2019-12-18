@@ -29,34 +29,67 @@ Disclaimer: This instructions is written based on macos environment
 ### Project Structure
 
 ```
-texadademo/
-  core/
-    migrations/             # contains all the migrations
-    models/                 # abstract models to be used throughout the project
-    utils/                  # utility modules
-    ...
-  products/
-    api/                    # folders for the api in products package
-      v1/                   # we used versioning in api
-        views/              # views for v1 in products package
-        serializers/        #serializers for v1
-        urls.py             # url mapper for v1
-        ...
-      urls.py               # api url mapper
-    datalayers/             # abstraction layer to communicate in between view and models
-    migrations/             # migrations folder 
-    models/                 # models folder to contain all model. Each model has separate files under this directory
-    tests/                  # tests for the products
-    ...
-  texadademo/
-    settings.py             # settings file 
-    wsgi.py                 # wsgi file
-  ...
-  manage.py
-  .gitignore
-  .dockerignore
-  Dockerfile                # Dockerfile to containerize the application
-  ...
+texadademo
+├── Dockerfile                  # dockerfile to containerize application
+├── README.md
+├── core                        # core app
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations
+│   │   ├── __init__.py
+│   ├── models
+│   │   ├── __init__.py
+│   │   └── models.py           # abstract models to be inherited by others
+│   ├── tests.py
+│   ├── utils
+│   │   ├── __init__.py
+│   │   ├── response.py         # response module to handle rest framework response
+│   │   └── utls.py
+│   └── views.py
+├── manage.py                   # manager file
+├── products                    # products app
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── api
+│   │   ├── __init__.py
+│   │   ├── urls.py             # api url mapper
+│   │   └── v1                  # v1 api for products app
+│   │       ├── __init__.py
+│   │       ├── serializers     # serializers to serialize models and validate data
+│   │       │   ├── __init__.py
+│   │       │   ├── product.py
+│   │       │   └── tracking.py
+│   │       ├── urls.py         # v1 urls for products app
+│   │       └── views
+│   │           ├── __init__.py
+│   │           ├── product.py
+│   │           └── tracking.py
+│   ├── apps.py
+│   ├── datalayers              # abstraction layer in between view and models
+│   │   ├── __init__.py
+│   │   └── product.py
+│   ├── migrations              # migrations
+│   │   ├── 0001_initial.py
+│   │   ├── __init__.py
+│   ├── models                  # models
+│   │   ├── __init__.py
+│   │   ├── product.py
+│   │   └── tracking.py
+│   ├── tests                   # sample tests for TDD development
+│   │   ├── __init__.py
+│   │   └── product.py
+│   ├── urls.py                 # product app urls
+│   └── views.py
+├── requirements.txt            # dependency file
+├── templates
+└── texadademo
+    ├── __init__.py
+    ├── asgi.py
+    ├── settings.py             # settings file
+    ├── urls.py                 # main url mapper
+    └── wsgi.py                 # wsgi file
+
 ```  
 
 

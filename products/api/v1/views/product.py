@@ -9,6 +9,9 @@ class ProductApiView(APIView):
         return ProductCreateSerializer
 
     def get(self, request):
+        '''
+        product list api
+        '''
         try:
             page_size = int(request.query_params.get('pageSize', CoreUtils.get_default_page_size()))
             page_index = int(request.query_params.get('pageIndex', CoreUtils.get_default_page_index()))
@@ -37,6 +40,9 @@ class ProductApiView(APIView):
             ), 500)
 
     def post(self, request):
+        '''
+        product create api
+        '''
         try:
             # getting serializer class
             serializer_class = self._get_create_serializer_class()
@@ -62,6 +68,9 @@ class ProductDetailApiView(APIView):
         return ProductCreateSerializer
 
     def put(self, request, id):
+        '''
+        product edit api
+        '''
         try:
             serializer_class = self._get_edit_serializer_class()
             serializer = serializer_class(data=request.data)
@@ -76,6 +85,9 @@ class ProductDetailApiView(APIView):
             ), 500)
 
     def get(self, request, id):
+        '''
+        product detail api
+        '''
         try:
             # get the product by id
             p = ProductDataLayer.get_product_by_id(id)
@@ -89,6 +101,7 @@ class ProductDetailApiView(APIView):
             ), 500)
 
     def delete(self, request, id):
+        '''product delete api'''
         try:
             # get the product by id
             p = ProductDataLayer.get_product_by_id(id)

@@ -9,6 +9,9 @@ class TrackingApiView(APIView):
         return TrackingCreateSerializer
 
     def post(self, request):
+        '''
+        tracking create api
+        '''
         try:
             # get the serializer class
             serializer_class = self._get_create_serializer_class()
@@ -28,6 +31,9 @@ class TrackingApiView(APIView):
             ), 500)
 
     def get(self, request):
+        '''
+        tracking list api
+        '''
         try:
             page_size = int(request.query_params.get('pageSize', CoreUtils.get_default_page_size()))
             page_index = int(request.query_params.get('pageIndex', CoreUtils.get_default_page_index()))
@@ -65,6 +71,9 @@ class TrackingDetailApiView(APIView):
         return TrackingCreateSerializer
 
     def put(self, request, id):
+        '''
+        tracking edit api
+        '''
         try:
             serializer_class = self._get_edit_serializer_class()
             serializer = serializer_class(data=request.data);
@@ -81,6 +90,7 @@ class TrackingDetailApiView(APIView):
             )
 
     def get(self, request, id):
+        '''tracking detail api'''
         try:
             t = ProductDataLayer.get_tracking_by_id(id)
             data = TrackSerializer(t).data
@@ -94,6 +104,7 @@ class TrackingDetailApiView(APIView):
             )
 
     def delete(self, request, id):
+        '''tracking delete api'''
         try:
             t = ProductDataLayer.get_tracking_by_id(id)
             t.delete(soft=False)
