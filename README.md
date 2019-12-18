@@ -1,7 +1,7 @@
 ## Texada Demo Backend Api
 
 
-### Setting up in local pc
+### How to set up in local pc
 
 ----
 Please follow the following instruction to run locally
@@ -25,8 +25,38 @@ Disclaimer: This instructions is written based on macos environment
 * Run `python manage.py runserver`
 * The development server should be running at `http://0.0.0.0:8000`
 
-
 --- 
+### Project Structure
 
+```
+texadademo/
+  core/
+    migrations/ # contains all the migrations
+    models/ # abstract models to be used throughout the project
+    utils/ # utility modules
+    ...
+  products/
+    api/ # folders for the api in products package
+      v1/ # we used versioning in api
+        views/ # views for v1 in products package
+        serializers/ #serializers for v1
+        urls.py # url mapper for v1
+        ...
+      urls.py # api url mapper
+    datalayers/ # abstraction layer to communicate in between view and models
+    migrations/ # migrations folder 
+    models/ # models folder to contain all model. Each model has separate files under this directory
+    tests/ # tests for the products
+    ...
+  texadademo/
+    settings.py # settings file 
+    wsgi.py # wsgi files
+  ...
+  manage.py
+  .gitignore
+  .dockerignore
+  Dockerfile # Dockerfile to containerize the application
+  ...
+```  
 
 
