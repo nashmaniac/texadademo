@@ -25,7 +25,7 @@ SECRET_KEY = '__!0u-9@ew64u7k+gm+d-cy57potk8ap6z%dpkn$udf=%g*r8k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 
 
 # Application definition
@@ -83,11 +83,11 @@ WSGI_APPLICATION = 'texadademo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'texadademo',
-        'USER': 'shetu',
-        'PASSWORD': 'shetu2153',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
         'HOST': 'localhost',
-        'PORT': '5432'
+        'PORT': 5432,
+        'USER': os.getenv('DATABASE_USER')
     }
 }
 
@@ -128,7 +128,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'http://storage.googleapis.com/%s/static/'%(os.getenv('static_url'))
 
 DEFAULT_PAGE_SIZE = 100
 DEFAULT_PAGE_INDEX = 0
@@ -141,3 +141,5 @@ INTERNAL_IPS = [
     'localhost',
     '127.0.0.1',
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
